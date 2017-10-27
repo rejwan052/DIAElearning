@@ -39,7 +39,8 @@ import info.dia.web.util.GenericResponse;
 import info.dia.web.util.HelperUtils;
 
 @Controller
-@PreAuthorize("hasAuthority('ADMIN_PRIVILEGE')")
+/*@PreAuthorize("hasAuthority('ADMIN_PRIVILEGE')")*/
+@PreAuthorize("@securityService.hasAdminPrivilege()")
 @RequestMapping(value="/admin")
 public class AdminController {
 

@@ -53,7 +53,8 @@ import info.dia.web.error.AssignmentDateTimeException;
 import info.dia.web.util.HelperUtils;
 
 @Controller
-@PreAuthorize("hasAuthority('STUDENT_PRIVILEGE')")
+/*@PreAuthorize("hasAuthority('STUDENT_PRIVILEGE')")*/
+@PreAuthorize("@securityService.hasStudentPrivilege()")
 @RequestMapping(value="/student")
 public class StudentController {
 	

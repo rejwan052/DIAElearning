@@ -81,7 +81,7 @@ import info.dia.web.util.HelperUtils;
 
 @Controller
 /*@PreAuthorize("hasAuthority('TEACHER_PRIVILEGE')")*/
-@PreAuthorize("@securityService.hasTeacherPrivilage()")
+@PreAuthorize("@securityService.hasTeacherPrivilege()")
 @RequestMapping(value="/teacher")
 public class TeacherController {
 	
