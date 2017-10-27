@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div   th:fragment="users">
+	
+		<table id="users" class="col-md-12 table-bordered table-striped table-condensed cf">
+
+								<thead class="cf">
+									<tr>
+										<th>Name</th>
+										<th>Email</th>
+										<th width="8%">Role</th>
+										<th width="8%">Gender</th>
+										<th width="10%">Blood Group</th>
+										<th width="6%">Status</th>
+										<th width="4%">
+											<span data-toggle="tooltip" data-placement="top" title="Actions" class="icon-wrench"></span>
+										</th>
+									</tr>
+								</thead>
+								<tbody th:if="${not #lists.isEmpty(users)}">
+									<tr th:each="user,rowStat : ${users}">
+										<!-- <td th:text="${rowStat.count}">1</td> -->
+										<td data-title="Name" th:text="${user.firstName !=null or user.lastName !=null? user.firstName+' '+user.lastName : ' '}">first name</td>
+										<td data-title="Email" th:text="${user.email}">Email</td>
+										<td data-title="Role" th:text="${#strings.listJoin(user.roles,',')}">Role</td>
+										<td data-title="Gender" th:text="${user.gender}">Gender</td>
+										<td data-title="Blood Group" th:text="${user.bloodGroup}">Blood Group</td>
+										
+										<td data-title="Account Status" th:class="${user.enabled} ? 'label label-success' : 'label label-danger'"  th:if="${user.enabled} == true">Active</td>
+										<td data-title="Account Status" th:class="${user.enabled} ? 'label label-success' : 'label label-danger'"  th:if="${user.enabled} == false">Inactive</td>
+										
+										<td data-title="Actions" >
+											<a class="btn btn-icon-only green" data-toggle="tooltip" data-placement="top" title="Edit" th:onclick="'javascript:updateUserModal(\''+${user.id}+'\');'"  href="javascript:;">
+												<span class="fa fa-pencil-square-o"></span>
+											</a>
+										</td>
+									</tr>
+								</tbody>
+								
+								<tbody th:if="${users.getTotalElements() eq 0}">
+									<tr>
+										<td class="alert alert-warning" align="center" colspan="8">No User Found!</td>
+									</tr>
+								</tbody>
+								
+							</table>
+							
+							<div th:if="${isSearch}=='true'">
+							
+							<div class="row">
+							<div th:if="${users.getTotalPages() > 0}">
+								<div id="pagination" th:if="${users.getTotalPages() > 1}" class="form-group col-sm-12 col-md-12 col-lg-12 pagination-centered">
+									<ul class="pagination">
+										<li th:class="${users.getNumber() == 0} ? disabled"><a
+											class="pageLink"
+											th:href="@{/admin/allUsers/search( page=1,oldDirection=${oldDirection},oldSortString=${oldSortString})}">&laquo;</a></li>
+										<li th:class="${users.getNumber() == 0} ? disabled"><a
+											class="pageLink"
+											th:href="@{/admin/allUsers/search( page=${users.getNumber()},oldDirection=${oldDirection},oldSortString=${oldSortString})}">&larr;</a></li>
+										<li	th:id="${page}"
+											th:class="${users.getNumber() == (page - 1)} ? 'active pointer-disabled'"
+											th:each="page : ${#numbers.sequence(pager.getStartPage(), pager.getEndPage())}"><a
+											class="pageLink"
+											th:href="@{/admin/allUsers/search( page=${page},oldDirection=${oldDirection},oldSortString=${oldSortString})}"
+											th:text="${page}"></a></li>
+										<li
+											th:class="${users.getNumber() + 1 == users.getTotalPages()} ? disabled"><a
+											class="pageLink"
+											th:href="@{/admin/allUsers/search( page=${users.getNumber() + 2},oldDirection=${oldDirection},oldSortString=${oldSortString})}">&rarr;</a></li>
+										<li
+											th:class="${users.getNumber() + 1 == users.getTotalPages()} ? disabled"><a
+											class="pageLink"
+											th:href="@{/admin/allUsers/search(page=${users.getTotalPages()})}">&raquo;</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						
+						</div>
+
+						<div th:if="${isSearch==null}">
+							
+						<div class="row">
+							<div th:if="${users.getTotalPages() > 0}">
+								<div id="pagination" th:if="${users.getTotalPages() > 1}" class="form-group col-sm-12 col-md-12 col-lg-12 pagination-centered">
+									<ul class="pagination">
+										<li th:class="${users.getNumber() == 0} ? disabled"><a
+											class="pageLink"
+											th:href="@{/admin/allUsers( page=1,oldDirection=${oldDirection},oldSortString=${oldSortString})}">&laquo;</a></li>
+										<li th:class="${users.getNumber() == 0} ? disabled"><a
+											class="pageLink"
+											th:href="@{/admin/allUsers( page=${users.getNumber()},oldDirection=${oldDirection},oldSortString=${oldSortString})}">&larr;</a></li>
+										<li	th:id="${page}"
+											th:class="${users.getNumber() == (page - 1)} ? 'active pointer-disabled'"
+											th:each="page : ${#numbers.sequence(pager.getStartPage(), pager.getEndPage())}"><a
+											class="pageLink"
+											th:href="@{/admin/allUsers( page=${page},oldDirection=${oldDirection},oldSortString=${oldSortString})}"
+											th:text="${page}"></a></li>
+										<li
+											th:class="${users.getNumber() + 1 == users.getTotalPages()} ? disabled"><a
+											class="pageLink"
+											th:href="@{/admin/allUsers( page=${users.getNumber() + 2},oldDirection=${oldDirection},oldSortString=${oldSortString})}">&rarr;</a></li>
+										<li
+											th:class="${users.getNumber() + 1 == users.getTotalPages()} ? disabled"><a
+											class="pageLink"
+											th:href="@{/admin/allUsers(page=${users.getTotalPages()})}">&raquo;</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+	
+			</div>
+
+</body>
+</html>

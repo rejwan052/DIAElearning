@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+    			xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="company-image">
+
+		<div style="float: left; margin: -5% 35%; width: 30%; position: absolute;" align="center" th:if="${param.message != null}" class="alert alert-info animated fadeInUp" th:text="${param.message[0]}">message</div>
+		<div id="error" style="float: left; margin: -5% 35%; width: 30%; position: absolute;" align="center" th:if="${param.error != null}" class="alert alert-danger animated fadeInUp" th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</div>
+				
+        <!-- BEGIN LOGO -->
+        <div class="logo">
+            <a href="#"><img th:src="@{/assets/images/eLearning__Logo.png}" alt="" /> </a>
+        </div>
+       <!--  END LOGO -->
+        
+</div>
+
+        
+</body>
+</html>

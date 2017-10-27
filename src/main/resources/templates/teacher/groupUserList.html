@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+</head>
+<body>
+	<div class="form-group"  th:fragment="groupUserList" th:unless="${#lists.isEmpty(groupUsers)}">
+			<input name="q" class="form-control" placeholder="Search..." type="text">
+			<select name="to[]" id="search_to" class="form-control" size="8">
+				<option th:each="groupDetails: ${groupUsers}" 
+						th:value="${groupDetails.id}"
+						th:text="${groupDetails.email}">User</option>
+			</select>
+	</div>
+</body>
+</html>

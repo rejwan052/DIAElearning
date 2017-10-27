@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/main">
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="#{label.pages.student.assignments}">Title</title>
+</head>
+<body>
+	<th:block layout:fragment="script">
+		<link th:href="@{/assets/css/tableResponsive.css}" rel="stylesheet" type="text/css" />
+	</th:block>
+	<div layout:fragment="content">
+		
+		<div class="page-content-inner">
+			<div class="row">
+					<!-- BEGIN SAMPLE FORM PORTLET-->
+					<div class="portlet light ">
+						<div class="portlet-title">
+							<div class="caption font-red-sunglo">
+								<i class="icon-settings font-red-sunglo"></i> <span
+									class="caption-subject font-blue-madison bold">My Assignment List</span>
+							</div>
+							<div class="actions">
+								<div class="btn-group">
+									<a class="btn btn-sm green btn-outline dropdown-toggle" href="javascript:;"
+										data-toggle="dropdown"> Actions <i
+										class="fa fa-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu pull-right">
+										<!-- <li><a th:href="@{/teacher/assignment}"><i class="fa fa-plus-circle"></i>Create Assignment</a></li> -->
+									</ul>
+								</div>
+							</div>
+						</div>
+						
+					<th:block th:include="fragments/student/searchAssignment :: searchAssignment"></th:block>
+					<!-- Student Assignments  Fragments -->
+					<div id="no-more-tables" class="portlet-body form">
+							<th:block th:include="fragments/student/assignments :: assignments"></th:block>
+					</div>
+					<!-- Student Assignments  Fragments -->
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

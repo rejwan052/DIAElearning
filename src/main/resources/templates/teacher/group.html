@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/main">
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="#{label.pages.teacher.group}">Title</title>
+</head>
+<body>
+
+	<th:block layout:fragment="script">
+	 	   <!-- <link th:href="@{/assets/css/bootstrap-select.min.css}" rel="stylesheet" type="text/css" />
+           <script th:src="@{/assets/js/bootstrap-select.min.js}"></script> -->
+            <!-- <script>
+                 function foo() {
+                    ...
+                 }
+            </script> -->
+       </th:block>
+       
+	<div layout:fragment="content">
+			
+			<div class="page-content-inner">
+			<div class="row">
+				<div>
+					<!-- BEGIN SAMPLE FORM PORTLET-->
+					<div class="portlet light ">
+						<div class="portlet-title">
+							<div class="caption font-red-sunglo">
+								<i class="icon-settings font-red-sunglo"></i> <span
+									class="caption-subject bold">Create Group</span>
+							</div>
+							<div class="actions">
+								<div class="btn-group">
+									<a class="btn btn-sm green btn-outline dropdown-toggle" href="javascript:;"
+										data-toggle="dropdown"> Actions <i
+										class="fa fa-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu pull-right">
+										<li><a th:href="@{/teacher/group}"> <i class="fa fa-plus-circle"></i>Create New Group</a></li>
+										<li><a th:href="@{/teacher/groups}"> <i class="fa fa-eye"></i>View My Groups</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="portlet-body form">
+							<form role="form" id="groupForm" th:object="${groupDto}" >
+								<div class="form-body">
+									<input type="hidden" th:field="*{id}" />
+									<div class="row">
+										<div class="col-sm-3">
+											<!--Column left-->
+											<div class="form-group">
+												<label th:text="#{label.group.name}" class="control-label">Group Name</label> 
+												<input th:field="*{name}" type="text" class="form-control" /> 
+												<span id="nameError" class="text-danger" style="display: none"></span>
+											</div>
+										</div>
+										
+										<div class="col-sm-9" th:style="'margin-top:25px;'">
+											<div class="form-group">
+												 
+												<div class="col-sm-5">
+								                    <select th:field="*{groupDetailsForm}" name="from[]" id="search" class="form-control" size="8" multiple="multiple">
+								                    	<option th:each="user: ${groupDetailsForm}"
+																th:value="${user.id}"
+																th:text="${user.email}">
+															User
+														</option>
+								                    </select>
+								                    
+								                </div>
+	                
+								                <div class="col-sm-2">
+								                    <button type="button" id="search_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+								                    <button type="button" id="search_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+								                    <button type="button" id="search_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+								                    <button type="button" id="search_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+								                </div>
+	                
+								                <div class="col-sm-5">
+								                    <select th:field="*{groupDetailsTo}" name="to[]" id="search_to" class="form-control" size="8" multiple="multiple">
+								                    	<option th:each="user: ${groupDetailsTo}"
+																th:value="${user.id}"
+																th:text="${user.email}">
+															User
+														</option>
+								                    </select>
+								                    <span id="groupDetailsToError" class="text-danger" style="display: none"></span>
+								                </div>
+	
+											</div>
+										</div>
+									</div>
+									
+									<div class="row">
+										<div th:style="'text-align:right;margin-right:30px'">
+											<button type="submit"  id="group-button" class="btn btn-primary">
+												 Submit
+											</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</body>
+</html>

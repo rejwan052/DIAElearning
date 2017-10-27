@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<div th:fragment="studentAssignmentDocument">
+		<div th:if="${document !=null}">
+			<h5>Assignment Document :</h5>
+			<ul class="list-group">
+				<li class="list-group-item list-group-item-info clearfix">
+					<span class="glyphicon glyphicon-file"></span>
+					<span th:text="${document.name}"></span>
+					<span class="pull-right">
+						<span class="badge badge-info" th:text="${document.createOn} ? ${#calendars.format(document.createOn,'dd MMM yyyy hh:mm a')}"></span>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

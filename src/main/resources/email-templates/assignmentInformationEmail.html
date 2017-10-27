@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title data-th-remove="all">Daffodil E-learning | Assignment Information</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+    
+        <div style="background-color: #ccc; background-image: url(images/background.png)"
+             data-th-style="|background-color: #ccc; background-image: url(cid:background)|">
+             
+             
+            <div style="padding: 40px;">
+                <div style="margin-left: auto; margin-right: auto; min-width: 320px; border: solid 1px #555; border-radius: 6px;">
+                
+                    <div style="background-color: #555; padding: 4px 4px 2px 4px;">
+                        <div style="background-image: url(images/logo-background.png);"
+                             data-th-style="|background-image: url(cid:logo-background)|">
+                            <img style="border: solid 1px #555; border-radius: 6px;"
+                                 src="images/eLearning_Banner.png" data-th-src="|cid:eLearning_Banner|" />
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 15px 15px 30px 15px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size:1em; background-color: #fff; color:#333;">
+                        <p>Dear <b data-th-text="${name}?${name}:'Student'">Peter</b>!</p>
+                       	<div>
+                       		<p>You have an assignment by <b data-th-text="${assignmentCreator}">Peter</b> . Furthermore assignment information has given bellow.</p>
+                       	</div>
+                       	
+					<table border="1" width="100%">
+						<caption>Assignment Information.</caption>
+						<tr>
+							<td>Title</td>
+							<td th:text="${title}">title</td>
+						</tr>
+						<tr>
+							<td>Session</td>
+							<td th:text="${session}">session</td>
+						</tr>
+						<tr>
+							<td>Last Date Of Submission</td>
+							<td th:text="${endDate}">end date</td>
+						</tr>
+					</table>
+
+
+						<p>* This is an automatically generated email.Please do not reply to it.</p>
+                        
+                    </div>
+                    
+                    
+                    <div style="background-color: #555; padding: 4px 4px 0px 4px; text-align: right;">
+                        <div style="background-image: url(images/logo-background.png);"
+                             data-th-style="|background-image: url(cid:logo-background)|">
+                            <img style="border: solid 1px #555; border-radius: 6px;"
+                                 src="images/eLearning_Logo.png" data-th-src="|cid:eLearning_Logo|" />
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+       
+       
+       
+        </div>
+        
+        
+        
+    </body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/main">
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="#{label.pages.teacher.viewAssignment}">Title</title>
+</head>
+<body>
+
+	<th:block layout:fragment="script">
+	
+		<link th:href="@{/assets/css/tableResponsive.css}" rel="stylesheet" type="text/css" />
+		
+		<script th:inline="javascript">
+			
+		var contextRoot = /*[[@{/}]]*/ '';	
+		
+		var currentPage = $('.pagination li.active').attr('id');
+		
+		$('#th_Checkbox').change(function(){
+		    if($(this).prop('checked')){
+		        $('tbody tr td input[type="checkbox"]').each(function(){
+		            $(this).prop('checked', true);
+		        });
+		    }else{
+		        $('tbody tr td input[type="checkbox"]').each(function(){
+		            $(this).prop('checked', false);
+		        });
+		    }
+		    
+		    var length = $('.td_Checkbox:checked').length;
+		    console.log("Checked length: "+length);
+		    
+		});
+		
+		$(document).ready(function() {
+		
+		    $('#editAssignmentStudent').click(function() {
+		    	
+			    	
+		    		var tableControl= document.getElementById('allAssignmentStudentTable');
+				   
+				   	var assignmentId = $( "#assignmentId" ).val();
+				   
+				   	var assignmentStudnetIds = [];
+				   
+		    		assignmentStudnetIds.splice(0,assignmentStudnetIds.length);
+		    		
+		    		$('input:checkbox:checked',tableControl).each(function() {
+		    	 		assignmentStudnetIds.push($(this).closest('tr').find('td.assignmentStudentId').text());
+			        }).get();
+		    	 	
+		    	 	if(assignmentStudnetIds.length>0){
+		    	 		
+		    	 		assignmentStudnetIds = assignmentStudnetIds.filter(function(e){return e});
+		    	 		
+		    	 		var url = contextRoot+"teacher/editAssignmentStudent"+'/'+assignmentStudnetIds+"?assignmentId="+assignmentId;
+		    	 		
+		    	 		var page = $('.pagination li.active').attr('id');
+		    	 		
+		    	 		if(page){
+		    	 			url = url+"&page="+page;
+		    	 		}
+		    	 		$.ajax({
+							url:url,
+							type: "GET",		
+							success:function(result){
+								$("#assignmentStudentsModalContent").html(result);
+							},complete:function(){
+					  			$("#assignmentStudentsModal").modal({
+									
+								});
+							}
+						}); 
+		    	 	}else{
+		    	 		errorMsg("Please select an email");
+		    	 	} 
+		    });
+		});
+			
+			// Download Student Assignment
+			 $(document).ready(function() {
+				
+				   var tableControl= document.getElementById('allAssignmentStudentTable');
+				   var assignmentId = $( "#assignmentId" ).val();
+				   var ajaxURL = contextRoot+"teacher/downloadStudentsAssignmentDocuments";
+				   
+				    $('#downloadStudentAssignmentDocument').click(function(e) {
+				    		e.preventDefault();
+				    		var emails = [];
+				    		 
+				    		$('input:checkbox:checked', tableControl).each(function() {
+				    			emails.push($(this).closest('tr').find('td.email').text());
+					        }).get();
+				    		
+				    		$.ajax({
+				    		    type : "GET",
+				    		    url : ajaxURL,
+				    		    data : {            
+				    		           "assignmentId": assignmentId,
+				    		           "emails[]": emails
+				    		    },
+				    		    success : function(response) {
+				    		    	window.location.href=contextRoot+"teacher/downloadStudentsAssignmentDocuments?assignmentId="+assignmentId+"&emails[]="+emails;
+				    		    },complete: function() {
+				    		    	
+				    	        },error : function(e) {
+				    		       alert('Error: ' + e);
+				    		    }
+				    		}); 
+				    	 	
+				    });
+				});
+			
+			
+			 function addAssignmentStudent(assignmentId){
+				 	
+				 	
+				 	var ajaxURL =contextRoot+"teacher/addAssignmentStudentModal/"+assignmentId;
+				 	
+					$.ajax({
+						url:ajaxURL,
+						type: "GET",
+						success:function(result){
+							$("#addAssignmentStudentModalContent").html(result);
+						},complete:function(){
+				  			$("#addAssignmentStudentModal").modal({
+				  				
+							});
+						}
+					}); 
+			   }
+			 
+			 
+		</script>
+		<style th:inline="text">
+				.modal-dialog {
+					width: 65%;			
+				}
+		</style>
+		
+	</th:block>
+
+	<div layout:fragment="content">
+
+		<div class="page-content-inner">
+			<div class="row" th:if="${assignment} !=null">
+				<!-- BEGIN SAMPLE FORM PORTLET-->
+					<div class="portlet light ">
+						<div class="portlet-title">
+							<input type="hidden" id="assignmentId" th:value="${assignment.id}" />
+							<div class="col-md-4">
+								<i class="fa fa-sticky-note-o font-red-sunglo" data-toggle="tooltip" data-placement="top" title="Assignment Name"></i> <span
+									class="caption-subject font-blue-madison bold" th:text="${assignment.title}">View
+									Assignment</span>
+							</div>
+							<div class="col-md-5">
+								<div class="col-md-5" data-toggle="tooltip" data-placement="top" title="Last Date Of Submission">
+									<span class="fa fa-calendar-o font-red-sunglo "></span> <span
+										class="caption-subject font-blue-madison"
+										th:text="${assignment.submitEndDate} ? ${#calendars.format(assignment.submitEndDate,'dd MMM yyyy hh:mm a')}">Assignment
+										Date Information</span>
+								</div>
+								
+								<div class="col-md-4" data-toggle="tooltip" data-placement="top" title="Assignment Session">
+									<span class="font-red-sunglo bold">Session</span> <span
+										class="caption-subject font-blue-madison"
+										th:text="${assignment.session}">Assignment Session</span>
+								</div>
+								
+								<div class="col-md-3" data-toggle="tooltip" data-placement="top" title="Assignment Status">
+									<span class="font-red-sunglo bold">Status</span> <span
+										class="caption-subject font-blue-madison"
+										th:text="${assignment.status==true?'Published':'Saved'}">Assignment Status</span>
+								</div>
+							</div>
+							
+							<div class="col-md-2">
+								<div class="col-md-6" data-toggle="tooltip" data-placement="top" title="Total Number Of Students">
+									<i class="fa fa-users font-red-sunglo "></i> <span
+										class="caption-subject font-blue-madison"
+										th:text="${totalAssignmentStudents}">Total Number Of Students</span>
+								</div>
+								
+								<div class="col-md-6" data-toggle="tooltip" data-placement="top" title="Submitted">
+									<i class="fa fa-upload font-red-sunglo "></i> <span
+										class="caption-subject font-blue-madison"
+										th:text="${totalAssignmentSubmittedStudents}">Submitted</span>
+								</div>
+							</div>
+							
+							<div class="actions col-md-1">
+								<div class="btn-group">
+									<a class="btn btn-sm green btn-outline dropdown-toggle"
+										href="javascript:;" data-toggle="dropdown"> Actions <i
+										class="fa fa-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu pull-right">
+										<li>
+										<a th:href="@{/teacher/assignment}"><i
+												class="fa fa-plus-circle"></i>Create Assignment
+										</a>
+										</li>
+										<li>
+										<a th:href="@{/teacher/assignments(page = 1,sortString=id,oldDirection=${oldDirection},oldSortString=${oldSortString})}"> <i
+												class="fa fa-eye"></i>View Assignments
+										</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							
+						</div>
+						
+						<th:block th:include="fragments/teacher/searchAssignmentStudent :: searchAssignmentStudent"></th:block>
+						
+						<!-- Assignment Student Fragment -->
+						<div id="no-more-tables" class="portlet-body form">
+							<th:block th:include="fragments/teacher/assignmentStudents :: assignmentStudents"></th:block>
+						</div>
+						<!-- Assignment Student Fragment -->
+			
+						<!-- Add Student Modal -->
+						<div class="modal fade" id="addAssignmentStudentModal">
+							<div class="modal-dialog">
+								<div class="modal-content" id="addAssignmentStudentModalContent">
+											
+								</div>
+							</div>			
+						</div>
+						<!-- Add Student Modal -->
+						
+						<div class="modal fade" id="assignmentStudentsModal">
+							<div class="modal-dialog">
+								<div class="modal-content" id="assignmentStudentsModalContent">
+											
+								</div>
+							</div>			
+						</div>
+			
+			
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	
+
+</body>
+</html>

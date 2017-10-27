@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/main">
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="#{label.pages.admin.allUsers}">Title</title>
+</head>
+<body>
+	
+	<th:block layout:fragment="script">
+           <link th:href="@{/assets/css/tableResponsive.css}" rel="stylesheet" type="text/css" />
+           
+           <script th:inline="javascript">
+           /*<![CDATA[*/
+        	   
+               var contextRoot = /*[[@{/}]]*/ '';
+           
+        	   function updateUserModal(userId){
+				 	var page = $('.pagination li.active').attr('id');
+				 	var ajaxURL = contextRoot+"admin/updateUser/"+userId;
+				 	if(page){
+				 		ajaxURL = ajaxURL+"?page="+page;		
+				 	}
+		     	   	console.log("Selected page: "+page);
+					$.ajax({
+						url:ajaxURL,
+						type: "GET",
+						success:function(result){
+							$("#updateUserModalContent").html(result);
+						},complete:function(){
+				  			$("#updateUserModal").modal({
+				  				
+							});
+						}
+					}); 
+			   }
+        	   
+           /*]]>*/ 
+           </script>
+           
+	</th:block>
+
+	<div layout:fragment="content">
+
+		<div class="page-content-inner">
+			<div class="row">
+				<!-- BEGIN SAMPLE FORM PORTLET -->
+				<div class="portlet light ">
+
+					<div class="portlet-title">
+						<div class="caption font-red-sunglo">
+							<i class="icon-settings font-red-sunglo"></i> <span
+								class="caption-subject font-blue-madison bold">E-learning
+								Users</span>
+						</div>
+						<div class="actions">
+							<div class="btn-group">
+								<a class="btn btn-sm green btn-outline dropdown-toggle"
+									href="javascript:;" data-toggle="dropdown"> Actions <i
+									class="fa fa-angle-down"></i>
+								</a>
+								<ul class="dropdown-menu pull-right">
+									<li><a th:href="@{/admin/createUser}"><i
+											class="fa fa-plus-circle"></i>Create User</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					<th:block th:include="fragments/admin/searchUser :: searchUser"></th:block>
+
+					<!-- User Fragment -->
+					<div class="portlet-body form" id="no-more-tables">
+						<th:block th:include="fragments/admin/users :: users"></th:block>
+					</div>
+					<!-- User Fragment -->
+
+					<!-- Update User Modal -->
+					<div class="modal fade" id="updateUserModal">
+						<div class="modal-dialog">
+							<div class="modal-content" id="updateUserModalContent"></div>
+						</div>
+					</div>
+					<!-- Add Student Modal -->
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+		<div th:fragment="searchAssignment">
+		
+			<div class="row">
+			<div class="col-md-10">
+				<form id="searchForm" class="form-inline" role="form" action="#" th:action="@{/student/assignments/search}" th:object="${searchDTO}">
+					
+						<div class="input-group col-md-4">
+							<input id="searchAssignment" type="text"
+								th:field="*{searchString}" class="form-control"
+								placeholder="Search assignment..."> <span
+								class="input-group-btn"> </span>
+						</div>
+						
+						<div class="input-group">
+							<!-- <span th:text="${searchDTO.assignmentStatus}"></span> -->
+							<div class="btn-group" data-toggle="buttons">
+								<label th:class="${searchDTO.assignmentStatus} ? 'btn blue active' : 'btn blue'"><input type="radio" id="q_op_0" name="assignmentStatus" th:field="*{assignmentStatus}"	value="true" class="toggle">Submitted</label>
+								<label th:class="${searchDTO.assignmentStatus==false} ? 'btn blue active' : 'btn blue'"><input type="radio" id="q_op_1"  name="assignmentStatus" th:field="*{assignmentStatus}"	value="false" class="toggle">Not Submitted</label>
+							</div>
+						</div>
+						<button data-placement="top" data-toggle="tooltip" data-original-title="Filter" class="btn btn-default" type="submit">
+							<i class="fa fa-filter"></i>
+						</button>
+					
+				</form>
+			</div>
+
+			<div class="col-md-2">
+				<a data-placement="top" data-toggle="tooltip" data-original-title="Refresh" class="btn btn-default pull-right" th:href="@{/student/assignments}">
+					<i class="glyphicon glyphicon-refresh"></i>
+				</a>
+			</div>
+
+		</div>
+		
+		</div>
+</body>
+</html>

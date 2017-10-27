@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/main">
+	
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="#{label.pages.teacher.assignmentList}">Title</title>
+</head>
+<body>
+		<th:block layout:fragment="script">
+
+		<link th:href="@{/assets/css/tableResponsive.css}" rel="stylesheet" type="text/css" />
+		<script th:src="@{/assets/js/custom_js/pagination.js}"></script>
+		
+       </th:block>
+       
+<div layout:fragment="content">
+       
+       <div class="page-content-inner">
+			<div class="row">
+					<!-- BEGIN SAMPLE FORM PORTLET-->
+				<div class="portlet light ">
+						
+						<div class="portlet-title">
+							<div class="caption font-red-sunglo">
+								<i class="icon-settings font-red-sunglo"></i> <span
+									class="caption-subject font-blue-madison bold">Assignment List</span>
+							</div>
+							<div class="actions">
+								<div class="btn-group">
+									<a class="btn btn-sm green btn-outline dropdown-toggle" href="javascript:;"
+										data-toggle="dropdown"> Actions <i
+										class="fa fa-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu pull-right">
+										<li><a th:href="@{/teacher/assignment}"><i class="fa fa-plus-circle"></i>Create Assignment</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					
+					
+					
+					
+					<th:block th:include="fragments/teacher/searchAssignment :: searchAssignment"></th:block>
+					
+					<div id="no-more-tables" class="portlet-body form">
+
+							<table id="allAssignmentTable" class="col-md-12 table-bordered table-striped table-condensed cf">
+
+								<thead class="cf">
+									<tr>
+										<th>
+										<a data-sortable="true" 
+											th:href="@{/teacher/assignments(page=${assignments.getNumber()+1},sortString=title,oldDirection=${oldDirection},oldSortString=${oldSortString})}">
+											Title
+										</a>
+										</th>
+										
+										<th>
+										<a data-sortable="true" 
+											th:href="@{/teacher/assignments(page=${assignments.getNumber()+1},sortString=session,oldDirection=${oldDirection},oldSortString=${oldSortString})}">
+											Session
+										</a>
+										</th>
+								
+										<th>
+											<a data-sortable="true" data-toggle="tooltip" data-placement="top" title="Assignment Status" class="glyphicon glyphicon-stats"
+											th:href="@{/teacher/assignments(page=${assignments.getNumber()+1},sortString=status,oldDirection=${oldDirection},oldSortString=${oldSortString})}">
+											</a>
+										</th>
+										<th width="29%">
+											<a data-sortable="true" data-toggle="tooltip" data-placement="top" title="Submission Date" class="glyphicon glyphicon-time"
+											th:href="@{/teacher/assignments(page=${assignments.getNumber()+1},sortString=submitStartDate,oldDirection=${oldDirection},oldSortString=${oldSortString})}">
+											</a>
+										</th>
+										<th>
+										<span data-toggle="tooltip" data-placement="top" title="No. of Assignment Documents" class="fa fa-files-o"></span>
+										</th>
+										<th>
+										<span data-toggle="tooltip" data-placement="top" title="No. of Students" class="fa fa-users"></span>
+										</th>
+										<th>
+										<span data-toggle="tooltip" data-placement="top" title="Submitted" class="fa fa-upload"></span>
+										</th>
+										<th width="8%">
+										<span data-toggle="tooltip" data-placement="top" title="Actions" class="icon-wrench"></span>
+										</th>
+									</tr>
+								</thead>
+								<tbody th:if="${not #lists.isEmpty(assignmentInfoDtos)}">
+									<tr th:each="assignmentInfoDto,rowStat : ${assignmentInfoDtos}">
+										<!-- <td th:text="${rowStat.count}">1</td> -->
+										<td data-title="Title" >
+											<a data-toggle="tooltip" data-placement="top" title="Edit assignment" th:href="@{/teacher/assignment/} + ${assignmentInfoDto.id}" th:text="${assignmentInfoDto.title}" >Title</a>
+										</td>
+										
+										<td data-title="Session" th:text="${assignmentInfoDto.session}">Session</td>
+										
+										<td data-title="Assignment Status" th:class="${assignmentInfoDto.status} ? 'label label-success' : 'label label-primary'"  th:if="${assignmentInfoDto.status} == true">Published</td>
+										<td data-title="Assignment Status" th:class="${assignmentInfoDto.status} ? 'label label-success' : 'label label-primary'"  th:if="${assignmentInfoDto.status} == false">Saved</td>
+										
+										<td data-title="Submission Date" th:text="${assignmentInfoDto.submitEndDate} ? ${#calendars.format(assignmentInfoDto.submitStartDate,'dd MMM yyyy hh:mm a')+' to '+#calendars.format(assignmentInfoDto.submitEndDate,'dd MMM yyyy hh:mm a')}">Last date of submission</td>
+										
+										<td data-title="No. of Assignment Documents" align="center" th:text="${assignmentInfoDto.assignmentDocuments}">No. of Assignment Documents</td>
+										
+										<td data-title="No. of Students" align="center">
+											<a data-toggle="tooltip" data-placement="top" title="View assignment student" 
+													th:text="${assignmentInfoDto.totalNumberOfStudent}" 
+													th:href="@{/teacher/viewAssignment(assignmentId=${assignmentInfoDto.id},
+													page = 1,sortString=email,oldDirection=${oldDirection},oldSortString=${oldSortString})}">
+											No. Of Students
+											</a>
+										</td>
+										
+										<td data-title="Submitted" align="center" th:text="${assignmentInfoDto.totalNumberOfSubmittedStudent}">Submitted</td>
+
+										<td data-title="Actions" >
+											<!-- <a class="btn btn-icon-only default" data-toggle="tooltip" data-placement="top" title="Add assignment reference file(s) " th:href="@{/teacher/addDocument/} + ${assignmentInfoDto.id}"><span class="fa fa-files-o"></span></a> -->
+											<!-- <a class="btn btn-icon-only blue" data-toggle="tooltip" data-placement="top" title="View assignment student" th:href="@{/teacher/viewAssignment(assignmentId=${assignmentInfoDto.id},page = 1,sortString=email,oldDirection=${oldDirection},oldSortString=${oldSortString})}"><span class="fa fa-eye"></span></a> -->
+											<!-- <a class="btn btn-icon-only green" id="editAssignmentByUserAndId" data-toggle="tooltip" data-placement="top" title="Edit assignment "  th:href="@{/teacher/assignment/} + ${assignmentInfoDto.id}"><span class="glyphicon glyphicon-pencil"></span></a> -->
+											<!-- <a th:if="${assignmentInfoDto.status}" class="btn btn-icon-only grey-cascade" data-toggle="tooltip" data-placement="top" title="Download assignment " th:href="@{/teacher/downloadStudentsAssignmentDocuments(assignmentId=${assignmentInfoDto.id})}"><span class="fa fa-download"></span></a> -->
+										
+										<div class="task-config">
+											<div class="task-config-btn btn-group">
+												<a class="btn btn-sm default" href="javascript:;"
+													data-toggle="dropdown" data-hover="dropdown"
+													data-close-others="true"> <i class="fa fa-cog"></i> <i
+													class="fa fa-angle-down"></i>
+												</a>
+												<ul class="dropdown-menu pull-right">
+												
+													<li>
+														<a th:href="@{/teacher/addDocument/} + ${assignmentInfoDto.id}">
+														 	<i class="fa fa-files-o"></i> Add assignment reference file(s)
+														</a>
+													</li>
+													
+													<li>
+														<a th:href="@{/teacher/viewAssignment(assignmentId=${assignmentInfoDto.id},page = 1,sortString=email,oldDirection=${oldDirection},oldSortString=${oldSortString})}">
+														 	<i class="fa fa-eye"></i> View assignment student
+														</a>
+													</li>
+													
+													<li>
+														<a th:if="${assignmentInfoDto.status}" th:href="@{/teacher/assignment/} + ${assignmentInfoDto.id}">
+													 		<i class="fa fa-pencil"></i> Edit assignment
+														</a>
+													</li>
+													
+													<li>
+														<a th:if="${assignmentInfoDto.status}" th:href="@{/teacher/downloadStudentsAssignmentDocuments(assignmentId=${assignmentInfoDto.id})}">
+													 		<i class="fa fa-download"></i> Download assignment
+														</a>
+													</li>
+													
+												</ul>
+											</div>
+										</div>
+									</td>
+									</tr>
+								</tbody>
+								
+								<tbody th:if="${#lists.isEmpty(assignmentInfoDtos)}">
+									<tr>
+										<td class="alert alert-warning" align="center" colspan="8">No Assignment Found!</td>
+									</tr>
+								</tbody>
+							</table>
+
+						<div th:if="${isSearch}=='true'">
+							
+							<div class="row">
+							<div th:if="${assignments.getTotalPages() > 0}">
+								<div th:if="${assignments.getTotalPages() > 1}"
+									class="form-group col-sm-12 col-md-12 col-lg-12 pagination-centered">
+									<ul class="pagination">
+										<li th:class="${assignments.getNumber() == 0} ? disabled"><a
+											class="pageLink"
+											th:href="@{/teacher/assignments/search( page=1,oldDirection=${oldDirection},oldSortString=${oldSortString})}">&laquo;</a></li>
+										<li th:class="${assignments.getNumber() == 0} ? disabled"><a
+											class="pageLink"
+											th:href="@{/teacher/assignments/search( page=${assignments.getNumber()},oldDirection=${oldDirection},oldSortString=${oldSortString})}">&larr;</a></li>
+										<li
+											th:class="${assignments.getNumber() == (page - 1)} ? 'active pointer-disabled'"
+											th:each="page : ${#numbers.sequence(pager.getStartPage(), pager.getEndPage())}"><a
+											class="pageLink"
+											th:href="@{/teacher/assignments/search( page=${page},oldDirection=${oldDirection},oldSortString=${oldSortString})}"
+											th:text="${page}"></a></li>
+										<li
+											th:class="${assignments.getNumber() + 1 == assignments.getTotalPages()} ? disabled"><a
+											class="pageLink"
+											th:href="@{/teacher/assignments/search( page=${assignments.getNumber() + 2},oldDirection=${oldDirection},oldSortString=${oldSortString})}">&rarr;</a></li>
+										<li
+											th:class="${assignments.getNumber() + 1 == assignments.getTotalPages()} ? disabled"><a
+											class="pageLink"
+											th:href="@{/teacher/assignments/search(page=${assignments.getTotalPages()})}">&raquo;</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						
+						</div>
+
+						<div th:if="${isSearch==null}">
+							
+						<div class="row">
+							<div th:if="${assignments.getTotalPages() > 0}">
+								<div th:if="${assignments.getTotalPages() > 1}"
+									class="form-group col-sm-12 col-md-12 col-lg-12 pagination-centered">
+									<ul class="pagination">
+										<li th:class="${assignments.getNumber() == 0} ? disabled"><a
+											class="pageLink"
+											th:href="@{/teacher/assignments/( page=1,oldDirection=${oldDirection},oldSortString=${oldSortString})}">&laquo;</a></li>
+										<li th:class="${assignments.getNumber() == 0} ? disabled"><a
+											class="pageLink"
+											th:href="@{/teacher/assignments/( page=${assignments.getNumber()},oldDirection=${oldDirection},oldSortString=${oldSortString})}">&larr;</a></li>
+										<li
+											th:class="${assignments.getNumber() == (page - 1)} ? 'active pointer-disabled'"
+											th:each="page : ${#numbers.sequence(pager.getStartPage(), pager.getEndPage())}"><a
+											class="pageLink"
+											th:href="@{/teacher/assignments/( page=${page},oldDirection=${oldDirection},oldSortString=${oldSortString})}"
+											th:text="${page}"></a></li>
+										<li
+											th:class="${assignments.getNumber() + 1 == assignments.getTotalPages()} ? disabled"><a
+											class="pageLink"
+											th:href="@{/teacher/assignments/( page=${assignments.getNumber() + 2},oldDirection=${oldDirection},oldSortString=${oldSortString})}">&rarr;</a></li>
+										<li
+											th:class="${assignments.getNumber() + 1 == assignments.getTotalPages()} ? disabled"><a
+											class="pageLink"
+											th:href="@{/teacher/assignments/(page=${assignments.getTotalPages()})}">&raquo;</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+				</div>
+	</div>
+			<!-- <div class="row">
+			<div class="form-group col-md-1">
+				<select class="form-control pagination selectpicker" id="pageSizeSelect">
+					<option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}" th:selected="${pageSize} == ${selectedPageSize}"></option>
+				</select>
+			</div>
+			<div id="pagination" th:if="${assignments.getTotalPages() != 1}" class="form-group col-md-11 pagination-centered">
+				<ul  class="pagination">
+					
+					<li th:class="${assignments.getNumber() == 0} ? disabled"><a class="pageLink" th:href="@{/teacher/assignments/(pageSize=${selectedPageSize}, page=1)}">&laquo;</a></li>
+					<li th:class="${assignments.getNumber() == 0} ? disabled"><a class="pageLink" th:href="@{/teacher/assignments/(pageSize=${selectedPageSize}, page=${assignments.getNumber()})}">&larr;</a></li>
+					<li th:class="${assignments.getNumber() == (page - 1)} ? 'active pointer-disabled'"	th:each="page : ${#numbers.sequence(pager.getStartPage(), pager.getEndPage())}"><a class="pageLink"  th:href="@{/teacher/assignments/(pageSize=${selectedPageSize},page=${page})}" th:text="${page}"></a></li>
+					<li th:class="${assignments.getNumber() + 1 == assignments.getTotalPages()} ? disabled"><a class="pageLink" th:href="@{/teacher/assignments/(pageSize=${selectedPageSize}, page=${assignments.getNumber() + 2})}">&rarr;</a></li>
+					<li th:class="${assignments.getNumber() + 1 == assignments.getTotalPages()} ? disabled"><a class="pageLink" th:href="@{/teacher/assignments/(pageSize=${selectedPageSize},page=${assignments.getTotalPages()})}">&raquo;</a></li>
+					
+					<li th:class="${assignments.getNumber() == 0} ? disabled"><a class="pageLink" href="javascript:void(0);" th:onclick="'javascript:getAssignmentList(\'' + ${selectedPageSize} +'\',\''+ 1 + '\',this);'">&laquo;</a></li>
+					<li th:class="${assignments.getNumber() == 0} ? disabled"><a class="pageLink" href="javascript:void(0);" th:onclick="'javascript:getAssignmentList(\'' + ${selectedPageSize} +'\',\''+ ${assignments.getNumber()} + '\',this);'">&larr;</a></li>
+					<li th:class="${assignments.getNumber() == (page - 1)} ? 'active pointer-disabled'"	th:each="page : ${#numbers.sequence(pager.getStartPage(), pager.getEndPage())}">
+					<a class="pageLink" href="javascript:void(0);" th:onclick="'javascript:getAssignmentList(\'' + ${selectedPageSize} +'\',\''+ ${page} + '\',this);'" th:text="${page}"></a></li>
+					<li th:class="${assignments.getNumber() + 1 == assignments.getTotalPages()} ? disabled"><a class="pageLink" href="javascript:void(0);" th:onclick="'javascript:getAssignmentList(\'' + ${selectedPageSize} +'\',\''+ ${assignments.getNumber() + 2} + '\',this);'">&rarr;</a></li>
+					<li th:class="${assignments.getNumber() + 1 == assignments.getTotalPages()} ? disabled"><a class="pageLink" href="javascript:void(0);" th:onclick="'javascript:getAssignmentList(\'' + ${selectedPageSize} +'\',\''+ ${assignments.getTotalPages()} + '\',this);'">&raquo;</a></li>
+					
+				</ul>
+			</div>
+			</div> -->
+		
+		</div>
+   </div>
+</body>
+</html>

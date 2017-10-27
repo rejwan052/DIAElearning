@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/main">
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="#{label.pages.teacher.groupList}">Title</title>
+</head>
+<body>
+	
+	<th:block layout:fragment="script">
+	 	   <!-- <link th:href="@{/assets/css/bootstrap-select.min.css}" rel="stylesheet" type="text/css" />
+           <script th:src="@{/assets/js/bootstrap-select.min.js}"></script> -->
+            <!-- <script>
+                 function foo() {
+                    ...
+                 }
+            </script> -->
+    </th:block>
+       
+	<div layout:fragment="content">
+		
+		<div class="page-content-inner">
+			<div class="row">
+				<div>
+					<!-- BEGIN SAMPLE FORM PORTLET-->
+					<div class="portlet light ">
+						<div class="portlet-title">
+							<div class="caption font-red-sunglo">
+								<i class="icon-settings font-red-sunglo"></i> <span
+									class="caption-subject bold">Group List</span>
+							</div>
+							<div class="actions">
+								<div class="btn-group">
+									<a class="btn btn-sm green btn-outline dropdown-toggle" href="javascript:;"
+										data-toggle="dropdown"> Actions <i
+										class="fa fa-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu pull-right">
+										<li><a th:href="@{/teacher/group}"> <i class="fa fa-plus-circle"></i>Create New Group</a></li>
+										<li><a th:href="@{/teacher/groups}"> <i class="fa fa-eye"></i>View My Groups</a></li>
+										<li><a th:onclick="'javascript:editGroup();'"> <i class="fa fa-pencil"></i>Edit Group</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="portlet-body form">
+							<form role="form" id="groupListForm">
+								<div class="form-body">
+									<div class="row">
+										<!-- <h4>Group List</h4> -->
+										<div class="col-sm-6">
+											<!--Column left-->
+											<div class="form-group">
+												<select onclick="retrieveGroupUsers()" name="from[]" id="search" class="form-control" size="8">
+								                    	<option th:each="group: ${groups}"
+																th:value="${group.id}"
+																th:text="${group.name}">
+															Group
+														</option>
+								                </select>
+											</div>
+										</div>
+										
+										<!-- <h4>Group User</h4> -->
+										<div  id ="resultsBlock" class="col-sm-6">
+											<div class="form-group">
+											<!-- Right left -->
+												<select name="to[]" id="search_to" class="form-control"	size="8">
+													<option th:each="groupDetails: ${groupUsers}"
+														th:value="${groupDetails.id}"
+														th:text="${groupDetails.email}">User</option>
+												</select>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</body>
+</html>

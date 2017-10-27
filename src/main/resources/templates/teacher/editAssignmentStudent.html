@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/main">
+
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="#{label.pages.teacher.assignmentStudentLastDateOfSubmission}">Title</title>
+</head>
+<body>
+		<th:block layout:fragment="script">
+
+		<link th:href="@{/assets/css/tableResponsive.css}" rel="stylesheet" type="text/css" />
+		
+		<script th:inline="javascript">
+       
+		var contextRoot = /*[[@{/}]]*/ '';
+		
+		$(document).ready(function () {
+		    
+			$('#updateAssignmentStudentForm').submit(function(event) {
+				updateAssignmentStudentLastDateOfSubmission(event);
+		    });
+		    
+		});
+
+		function updateAssignmentStudentLastDateOfSubmission(event){
+			
+		    event.preventDefault();
+		        
+		    var formData= $('#updateAssignmentStudentForm').serialize();
+		    
+		    $.post(contextRoot+"teacher/updateAssignmentStudentDate",formData ,function(data){
+		    	successMsg(data.message);
+		    }).fail(function(data) {
+		        if(data.responseJSON.error.indexOf("InternalError") > -1){
+		            /* $("#errormsg").show().append(data.responseJSON.message); */
+		        	errorMsg(data.responseJSON.message);
+		        }else{
+		        	var errors = $.parseJSON(data.responseJSON.message);
+		            $.each( errors, function( index,item ){
+		                errorMsg(item.defaultMessage);
+		            });
+		        }
+		    });
+		}
+			
+		</script>
+       </th:block>
+       
+	<div layout:fragment="content">
+
+		<div class="page-content-inner">
+			<div class="row">
+				<!-- BEGIN SAMPLE FORM PORTLET-->
+				
+				<div class="portlet light ">
+
+						<div class="portlet-title">
+							
+							<div class="col-md-4">
+								<i class="fa fa-sticky-note-o font-red-sunglo"
+									data-toggle="tooltip" data-placement="top"
+									title="Assignment Name"></i> <span class="caption-subject font-blue-madison bold"
+									th:text="${assignment.title}">View Assignment</span>
+							</div>
+
+							<div class="col-md-3"
+								data-toggle="tooltip" data-placement="top"
+								title="Last Date Of Submission">
+								<span class="fa fa-calendar-o font-red-sunglo "></span> <span
+									class="caption-subject font-blue-madison"
+									th:text="${assignment.submitEndDate} ? ${#calendars.format(assignment.submitEndDate,'dd MMM yyyy hh:mm a')}">Assignment
+									Date Information</span>
+							</div>
+							<div class="col-md-4">
+								<div class="col-md-7" data-toggle="tooltip" data-placement="top"
+									title="Assignment Session">
+									<span class="font-red-sunglo bold">Session :</span> <span
+										class="caption-subject font-blue-madison"
+										th:text="${assignment.session}">Assignment Session</span>
+								</div>
+	
+								<div class="col-md-5" data-toggle="tooltip" data-placement="top"
+									title="Assignment Status">
+									<span class="font-red-sunglo bold">Status :</span> <span
+										class="caption-subject font-blue-madison"
+										th:text="${assignment.status==true?'Published':'Saved'}">Assignment
+										Status</span>
+								</div>
+							</div>
+
+							<div class="actions col-md-1">
+								<div class="btn-group">
+									<a class="btn btn-sm green btn-outline dropdown-toggle"
+										href="javascript:;" data-toggle="dropdown"> Actions <i
+										class="fa fa-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu pull-right">
+										<li><a th:href="@{/teacher/assignment}"><i
+												class="fa fa-plus-circle"></i>Create Assignment</a></li>
+										<li><a th:href="@{/teacher/assignments}"> <i
+												class="fa fa-eye"></i>View Assignments
+										</a></li>
+										<li><a
+											th:href="@{/teacher/viewAssignment/(assignmentId=${assignment.id})}">
+												<i class="fa fa-arrow-left"></i>Back Assignment Student
+										</a></li>
+									</ul>
+								</div>
+							</div>
+							<!-- th:action="@{/teacher/updateAssignmentStudentDate}" method="post" -->
+							<form id="updateAssignmentStudentForm" th:object="${assignmentStudentListDto}">
+							<div id="no-more-tables" class="portlet-body form">
+								<input type="hidden" id="assignmentId" th:field="*{assignmentId}" />
+								<table id="editAssignmentStudentTable"
+									class="col-md-12 table-bordered table-striped table-condensed cf">
+
+									<thead class="cf">
+										<tr>
+											<th>#</th>
+											<th>Email</th>
+											<th><span data-toggle="tooltip" data-placement="top"
+												title="Assignment Status" class="glyphicon glyphicon-stats"></span>
+											</th>
+											<th width="29%"><span data-toggle="tooltip"
+												data-placement="top" title="Submitted Date"
+												class="glyphicon glyphicon-time"></span></th>
+											<th><span data-toggle="tooltip" data-placement="top"
+												title="Last Date Of Submission"
+												class="glyphicon glyphicon-time"></span></th>
+										</tr>
+									</thead>
+									<tbody th:if="${not #lists.isEmpty(assignmentStudentListDto.assignmentStudents)}">
+										<tr	th:each="assignmentStudentInfo,rowStat : *{assignmentStudents}">
+											<td th:text="${rowStat.count}">1</td>
+											<td class="assignmentStudentId" style="display: none;" ><input type="hidden" th:field="*{assignmentStudents[__${rowStat.index}__].assignmentStudentId}"  th:value="${assignmentStudentInfo.assignmentStudentId}" /></td>
+											
+											<td data-title="Email" th:text="${assignmentStudentInfo.email}">Email</td>
+
+											<td data-title="Assignment Status"
+												th:class="${assignmentStudentInfo.status} ? 'label label-success' : 'label label-danger'"
+												th:if="${assignmentStudentInfo.status} == true">Submitted</td>
+											<td data-title="Assignment Status"
+												th:class="${assignmentStudentInfo.status} ? 'label label-success' : 'label label-danger'"
+												th:if="${assignmentStudentInfo.status} == false">Not
+												Submitted</td>
+
+											<td data-title="Submitted Date"
+												th:text="${assignmentStudentInfo.submitedDate} ? ${#calendars.format(assignmentStudentInfo.submitedDate,'dd MMM yyyy hh:mm a')}">Submitted
+												Date</td>
+
+											<td data-title="Last Date Of Submission"
+												th:text="${assignmentStudentInfo.lastDateOfSubmission} ? ${#calendars.format(assignmentStudentInfo.lastDateOfSubmission,'dd MMM yyyy hh:mm a')}">Last
+												date of submission</td>
+
+										</tr>
+									</tbody>
+
+									<tbody th:if="${#lists.isEmpty(assignmentStudentListDto.assignmentStudents)}">
+										<tr>
+											<td class="alert alert-warning" align="center" colspan="4">No
+												Assignment Student Found!</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="dtp_input2"
+											th:text="#{label.assignment.submitEndDate}"
+											class="control-label">Due Date</label>
+										<div class="input-group date form_date">
+											<input class="form-control" name="submitEndDate"
+												th:field="*{submitEndDate}" size="16" type="datetime" /> <span
+												class="input-group-addon"><span
+												class="glyphicon glyphicon-remove"></span></span> <span
+												class="input-group-addon"><span
+												class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-actions" style="text-align: right;padding-top: 5%;">
+										<button type="submit" th:text="#{label.form.submit}" class="btn btn-primary">submit</button>
+									</div>
+								</div>
+							</div>
+							</form>
+						</div>
+					</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/main">
+<head>
+<meta charset="ISO-8859-1">
+<title th:text="#{label.pages.home.title}">Title</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+		<div class="profile-content">
+			<!-- Admin dashboard content -->
+				
+				<div class="row" sec:authorize="hasAuthority('ADMIN_PRIVILEGE')">
+				<div class="col-md-6">
+					<!-- BEGIN PORTLET -->
+					<div class="portlet light ">
+						<div class="portlet-title">
+							<div class="caption caption-md">
+								<i class="icon-bar-chart theme-font hide"></i> 
+								<span class="caption-subject font-blue-madison bold">User Activity</span>
+							</div>
+						</div>
+						<div class="portlet-body">
+							<div class="row number-stats margin-bottom-30">
+								<div class="col-md-4 col-sm-4 col-xs-4">
+									<div class="stat-left">
+										<div class="stat-chart">
+											<!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+											<div id="sparkline_bar"></div>
+										</div>
+										<div class="stat-number">
+											<!-- <div class="title caption-subject font-blue-madison bold">Total</div>
+											<div class="number ">2460</div> -->
+											<div class="portlet-body">
+												<!-- <a href="javascript:;" class="icon-btn"> -->
+												<a th:href="@{admin/allUsers}" class="icon-btn">
+												<i class="fa fa-users" aria-hidden="true"></i>
+													<div>Total</div> <span class="badge badge-info" th:text="${total}">2</span> 
+												</a>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END PORTLET -->
+				</div>
+			</div>
+			
+			<!-- Admin dashboard content -->
+			
+			
+			<!-- Teacher dashboard content -->
+			<div class="row" sec:authorize="hasAuthority('TEACHER_PRIVILEGE')">
+				<div class="col-md-6">
+					<!-- BEGIN PORTLET -->
+					<div class="portlet light ">
+						<div class="portlet-title">
+							<div class="caption caption-md">
+								<i class="icon-bar-chart theme-font hide"></i> 
+								<span class="caption-subject font-blue-madison bold">Assignment Activity</span>
+							</div>
+						</div>
+						<div class="portlet-body">
+							<div class="row number-stats margin-bottom-30">
+								<div class="col-md-4 col-sm-4 col-xs-4">
+									<div class="stat-left">
+										<div class="stat-chart">
+											<!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+											<div id="sparkline_bar"></div>
+										</div>
+										<div class="stat-number">
+											<!-- <div class="title caption-subject font-blue-madison bold">Total</div>
+											<div class="number ">2460</div> -->
+											<div class="portlet-body">
+												<!-- <a href="javascript:;" class="icon-btn"> -->
+												<a th:href="@{/teacher/assignments(page = 1,sortString=id,oldDirection=${oldDirection},oldSortString=${oldSortString})}" class="icon-btn">
+												<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													<div>Total</div> <span class="badge badge-info" th:text="${total}">2</span> 
+												</a>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-4">
+									<div class="stat-left">
+										<div class="stat-chart">
+											<!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+											<div id="sparkline_bar2"></div>
+										</div>
+										<div class="stat-number">
+											<!-- <div class="title caption-subject font-blue-madison bold">Publish</div>
+											<div class="number">719</div> -->
+											<div class="portlet-body">
+												<a th:href="@{/teacher/assignments(status=true)}" class="icon-btn">
+												<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													<div>Published</div> <span class="badge badge-success" th:text="${publish}">2</span> 
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-4">
+									<div class="stat-right">
+										<div class="stat-chart">
+											<!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+											<div id="sparkline_bar2"></div>
+										</div>
+										<div class="stat-number">
+											<!-- <div class="title caption-subject font-blue-madison bold">Save</div>
+											<div class="number">719</div> -->
+											<div class="portlet-body">
+												<a th:href="@{/teacher/assignments(status=false)}" class="icon-btn">
+												<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													<div>Saved</div> <span class="badge badge-warning" th:text="${saved}">	2 </span> 
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="table-scrollable table-scrollable-borderless">
+								<table class="table table-hover table-light">
+									<thead>
+										<tr class="uppercase">
+											<th>Name</th>
+											<th>Assignment</th>
+											<th>Time</th>
+											<th>
+												<span data-toggle="tooltip" data-placement="top" title="Actions" class="icon-wrench"></span>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										
+									</tbody>
+								</table>
+							</div> -->
+						</div>
+					</div>
+					<!-- END PORTLET -->
+				</div>
+			</div>
+			<!-- Teacher dashboard content -->
+			
+			
+			<!-- Student dashboard content -->
+			<div class="row" sec:authorize="hasAuthority('STUDENT_PRIVILEGE')">
+				<div class="col-md-6">
+					<!-- BEGIN PORTLET -->
+					<div class="portlet light ">
+						<div class="portlet-title">
+							<div class="caption caption-md">
+								<i class="icon-bar-chart theme-font hide"></i> 
+								<span class="caption-subject font-blue-madison bold">Assignment Activity</span>
+							</div>
+							<!-- <div class="actions">
+								<div class="btn-group btn-group-devided" data-toggle="buttons">
+									<label
+										class="btn btn-transparent grey-salsa btn-circle btn-sm active">
+										<input type="radio" name="options" class="toggle" id="option1">Today
+									</label> <label
+										class="btn btn-transparent grey-salsa btn-circle btn-sm">
+										<input type="radio" name="options" class="toggle" id="option2">Week
+									</label> <label
+										class="btn btn-transparent grey-salsa btn-circle btn-sm">
+										<input type="radio" name="options" class="toggle" id="option2">Month
+									</label>
+								</div>
+							</div> -->
+						</div>
+						<div class="portlet-body">
+							<div class="row number-stats margin-bottom-30">
+								<div class="col-md-4 col-sm-4 col-xs-4">
+									<div class="stat-left">
+										<div class="stat-chart">
+											<!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+											<div id="sparkline_bar"></div>
+										</div>
+										<div class="stat-number">
+											<!-- <div class="title caption-subject font-blue-madison bold">Total</div>
+											<div class="number ">2460</div> -->
+											<div class="portlet-body">
+												<a th:href="@{/student/assignments}" class="icon-btn">
+												<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													<div>Total</div> <span class="badge badge-info" th:text="${total}">2</span> 
+												</a>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-4">
+									<div class="stat-left">
+										<div class="stat-chart">
+											<!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+											<div id="sparkline_bar2"></div>
+										</div>
+										<div class="stat-number">
+											<!-- <div class="title caption-subject font-blue-madison bold">Publish</div>
+											<div class="number">719</div> -->
+											<div class="portlet-body">
+												<a th:href="@{/student/assignments(status=true)}" class="icon-btn">
+												<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													<div>Submitted</div> <span class="badge badge-success" th:text="${submitted}">2</span> 
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-4 col-xs-4">
+									<div class="stat-right">
+										<div class="stat-chart">
+											<!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+											<div id="sparkline_bar2"></div>
+										</div>
+										<div class="stat-number">
+											<!-- <div class="title caption-subject font-blue-madison bold">Save</div>
+											<div class="number">719</div> -->
+											<div class="portlet-body">
+												<a th:href="@{/student/assignments(status=false)}" class="icon-btn">
+												<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													<div>Not Submitted</div> <span class="badge badge-warning" th:text="${notSubmitted}">2</span> 
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END PORTLET -->
+				</div>
+			</div>
+			<!-- Student dashboard content -->
+			
+			
+			
+		</div>
+		 <!-- END PROFILE CONTENT -->
+	</div>
+</body>
+</html>

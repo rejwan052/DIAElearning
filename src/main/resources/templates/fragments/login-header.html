@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+    			xmlns:th="http://www.thymeleaf.org">
+    			
+<head th:fragment="login-header">
+	<meta charset="utf-8" />
+	<title th:text="#{label.pages.home.title}">Title</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+
+	<!-- BEGIN GLOBAL MANDATORY STYLES -->
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&amp;subset=all"	rel="stylesheet" type="text/css" />
+	
+	<link th:href="@{/assets/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+	<link th:href="@{/assets/simple-line-icons/simple-line-icons.min.css}"	rel="stylesheet" type="text/css" />
+	<link th:href="@{/assets/css/bootstrap.min.css}"	rel="stylesheet" type="text/css" />
+	<link th:href="@{/assets/css/animate.css}" rel="stylesheet" type="text/css" />
+	
+	<!-- END GLOBAL MANDATORY STYLES -->
+
+	<!-- BEGIN THEME GLOBAL STYLES -->
+	<link th:href="@{/assets/css/components-md.min.css}"	rel="stylesheet" id="style_components" type="text/css" />
+	<!-- END THEME GLOBAL STYLES -->
+
+	<!-- BEGIN PAGE LEVEL STYLES -->
+	<link th:href="@{/assets/css/login-2.min.css}" rel="stylesheet" type="text/css" />
+		<!-- END PAGE LEVEL STYLES -->
+	
+	<script th:src="@{/assets/js/jquery.min.js}"></script>
+	<script th:src="@{/assets/js/bootstrap.min.js}" ></script>
+	<script th:src="@{/assets/js/pwstrength.js}"></script>
+	<script th:src="@{/assets/js/bootstrap-notify.min.js}"></script>
+    
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		function validate() {
+			if (document.f.username.value == "" && document.f.password.value == "") {
+				alert(/*[[#{message.username} + #{message.password}]]*/);
+				document.f.username.focus();
+				return false;
+			}
+			if (document.f.username.value == "") {
+				alert(/*[[#{message.username}]]*/);
+				document.f.username.focus();
+				return false;
+			}
+			if (document.f.password.value == "") {
+				alert(/*[[#{message.password}]]*/);
+				document.f.password.focus();
+				return false;
+			}
+		}
+		/*]]>*/
+	</script>
+
+<style type="text/css">
+	.animated {
+		-webkit-animation-duration: 1s;
+		animation-duration: 1s;
+		-webkit-animation-fill-mode: both;
+		animation-fill-mode: both;
+	}
+	
+	@
+	-webkit-keyframes fadeInUp { 0% {
+		opacity: 0;
+		-webkit-transform: translateY(20px);
+		transform: translateY(20px);
+	}
+	
+	100%
+	{
+	opacity
+	:
+	 
+	1;
+	-webkit-transform
+	:
+	 
+	translateY
+	(0);
+	
+			    
+	transform
+	:
+	 
+	translateY
+	(0);
+	
+			  
+	}
+	}
+	@
+	keyframes fadeInUp { 0% {
+		opacity: 0;
+		-webkit-transform: translateY(20px);
+		-ms-transform: translateY(20px);
+		transform: translateY(20px);
+	}
+	
+	100%
+	{
+	opacity
+	:
+	 
+	1;
+	-webkit-transform
+	:
+	 
+	translateY
+	(0);
+	
+			    
+	-ms-transform
+	:
+	 
+	translateY
+	(0);
+	
+			    
+	transform
+	:
+	 
+	translateY
+	(0);
+	
+			  
+	}
+	}
+	.fadeInUp {
+		-webkit-animation-name: fadeInUp;
+		animation-name: fadeInUp;
+	}
+	</style>
+	<link rel="shortcut icon" th:href="@{/assets/images/eLearning_Favicon.png}" />
+<!-- END HEAD -->
+</head>
+
+</html>

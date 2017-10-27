@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+    <!--<![endif]-->
+    
+
+    <head th:include="fragments/login-header :: login-header" />
+    
+    <body class="login">
+    	
+    	
+        <div th:include="fragments/company-image :: company-image" ></div>
+        
+        
+        <!-- BEGIN LOGIN -->
+        <div class="content">
+            <!-- BEGIN LOGIN FORM -->
+            <form class="login-form" action="" method="post">
+                <div class="form-title">
+                    <span class="form-title">Welcome.</span>
+                    <span class="form-subtitle">Please login.</span>
+                </div>
+                <!-- <div class="alert alert-danger display-hide">
+                    <button class="close" data-close="alert"></button>
+                    <span> Enter any username and password. </span>
+                </div> -->
+                <div class="form-group">
+                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                    <label class="control-label visible-ie8 visible-ie9">Username</label>
+                    <div class="input-group">
+                    <span class="input-group-addon">
+	                    <i class="icon-envelope font-green"></i>
+	                </span>
+                    <input class="form-control form-control-solid placeholder-no-fix" required="required" type="text" autocomplete="off" placeholder="Email" name="username" value="" /> </div>
+                    </div>
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">Password</label>
+                    <div class="input-group">
+                    <span class="input-group-addon">
+	                    <i class="icon-lock font-green"></i>
+	                </span>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" value="" /> </div>
+                    </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn red btn-block uppercase">Login</button>
+                </div>
+                <div class="form-actions">
+                    <div class="pull-left md-checkbox">
+                        <label class="rememberme mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" class="md-check" name="remember" value="1" /> Remember me
+                            <span></span>
+                        </label>
+                    </div>
+                    <div class="pull-right forget-password-block">
+                        <a th:href="@{/forgetPassword}" id="forget-password" class="forget-password" th:text="#{message.resetPassword}">reset</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- END LOGIN -->
+        <!--[if lt IE 9]>
+<script src="../assets/global/plugins/respond.min.js"></script>
+<script src="../assets/global/plugins/excanvas.min.js"></script> 
+<![endif]-->
+    </body>
+
+</html>

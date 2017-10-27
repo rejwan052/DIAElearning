@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorator="layouts/main">
+	
+<head>
+<meta charset="ISO-8859-1" />
+<title th:text="#{label.pages.teacher.assignment}">Title</title>
+</head>
+<body>
+	
+	 <th:block layout:fragment="script">
+	 
+           
+           <link th:href="@{/assets/selectize/css/selectize.default.css}" rel="stylesheet" type="text/css" />
+           <link th:href="@{/assets/summernote/css/summernote.css}" rel="stylesheet" type="text/css" />
+           
+           <link th:href="@{/assets/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" type="text/css" />
+           <script th:src="@{/assets/js/bootstrap-datetimepicker.js}"></script> 
+           
+           <script th:src="@{/assets/summernote/js/summernote.js}"></script>
+           <script th:src="@{/assets/js/custom_js/custom_summernote.js}"></script>
+            
+           <script th:src="@{/assets/selectize/js/standalone/selectize.js}"></script>
+           <script th:src="@{/assets/js/custom_js/assignment.js}"></script>
+           
+     <style type="text/css">
+		.selectize-control.contacts .selectize-input > div {
+			padding: 1px 10px;
+			font-size: 13px;
+			font-weight: normal;
+			-webkit-font-smoothing: auto;
+			color: #f7fbff;
+			text-shadow: 0 1px 0 rgba(8,32,65,0.2);
+			background: #2183f5;
+			background: -moz-linear-gradient(top, #2183f5 0%, #1d77f3 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2183f5), color-stop(100%,#1d77f3));
+			background: -webkit-linear-gradient(top,  #2183f5 0%,#1d77f3 100%);
+			background: -o-linear-gradient(top,  #2183f5 0%,#1d77f3 100%);
+			background: -ms-linear-gradient(top,  #2183f5 0%,#1d77f3 100%);
+			background: linear-gradient(to bottom,  #2183f5 0%,#1d77f3 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2183f5', endColorstr='#1d77f3',GradientType=0 );
+			border: 1px solid #0f65d2;
+			-webkit-border-radius: 999px;
+			-moz-border-radius: 999px;
+			border-radius: 999px;
+			-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+			-moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+			box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+		}
+		.selectize-control.contacts .selectize-input > div.active {
+			background: #0059c7;
+			background: -moz-linear-gradient(top, #0059c7 0%, #0051c1 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0059c7), color-stop(100%,#0051c1));
+			background: -webkit-linear-gradient(top,  #0059c7 0%,#0051c1 100%);
+			background: -o-linear-gradient(top,  #0059c7 0%,#0051c1 100%);
+			background: -ms-linear-gradient(top,  #0059c7 0%,#0051c1 100%);
+			background: linear-gradient(to bottom,  #0059c7 0%,#0051c1 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0059c7', endColorstr='#0051c1',GradientType=0 );
+			border-color: #0051c1;
+		}
+		.selectize-control.contacts .selectize-input > div .email {
+			opacity: 0.8;
+		}
+		.selectize-control.contacts .selectize-input > div .name + .email {
+			margin-left: 5px;
+		}
+		.selectize-control.contacts .selectize-input > div .email:before {
+			content: '<';
+		}
+		.selectize-control.contacts .selectize-input > div .email:after {
+			content: '>';
+		}
+		.selectize-control.contacts .selectize-dropdown .caption {
+			font-size: 12px;
+			display: block;
+			color: #a0a0a0;
+		}
+		
+		
+		.glyphicon.spinning {
+			 animation: spin 1s infinite linear;
+			 -webkit-animation: spin2 1s infinite linear;
+		}
+			
+		@keyframes spin {
+			 from { transform: scale(1) rotate(0deg); }
+			 to { transform: scale(1) rotate(360deg); }
+		}
+			
+		@-webkit-keyframes spin2 {
+			 from { -webkit-transform: rotate(0deg); }
+			 to { -webkit-transform: rotate(360deg); }
+		}
+			
+		</style>
+    
+        <script type="text/javascript">
+           
+        var date = new Date();
+        date.setDate(date.getDate()-1);
+
+        $('.form_date').datetimepicker({
+            /* format: "yyyy-mm-dd HH:ii", */
+            use24hours: true,
+            startDate: date,
+            weekStart: 1,
+            todayBtn:  1,
+        	autoclose: 1,
+        	todayHighlight: 1,
+        	startView: 2,
+        	forceParse: 0,
+            showMeridian: 1
+        });
+	      
+        </script>
+           
+           
+	</th:block>
+	
+	<div layout:fragment="content">
+		 <!-- BEGIN PAGE CONTENT INNER -->
+		<div class="page-content-inner">
+			<div class="row">
+				<div>
+					<!-- BEGIN SAMPLE FORM PORTLET-->
+					<div class="portlet light ">
+						<div class="portlet-title">
+							<div class="caption font-red-sunglo">
+								<i class="icon-settings font-red-sunglo"></i> <span
+									class="caption-subject font-blue-madison bold">Create Assignment</span>
+							</div>
+							<div class="actions">
+								<div class="btn-group">
+									<a class="btn btn-sm green btn-outline dropdown-toggle" href="javascript:;"
+										data-toggle="dropdown"> Actions <i
+										class="fa fa-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu pull-right">
+										<li><a th:href="@{/teacher/assignments(page = 1,sortString=id,oldDirection=${oldDirection},oldSortString=${oldSortString})}"> <i class="fa fa-eye"></i>View Assignments</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="portlet-body form">
+							<!-- action="@{/teacher/assignment}" method="post" -->
+							<form role="form" id="assignmentForm" th:object="${assignmentDto}"  >
+								<div class="form-body">
+									
+									<input type="hidden" th:field="*{id}" />
+									<div class="row">
+										<div class="col-md-4">
+											<!--Column left-->
+											<div class="form-group">
+												<label th:text="#{label.assignment.title}" class="control-label">Title</label> 
+												<input type="text" th:field="*{title}" class="form-control" /> 
+												<span id="titleError" class="text-danger" style="display: none"></span>
+											</div>
+										</div>
+
+										<div class="col-md-2">
+											<!--Column right-->
+											<div class="form-group">
+												<label th:text="#{label.assignment.session}" class="control-label">Session</label> 
+												<input type="text" th:field="*{session}" class="form-control" /> 
+												<span id="sessionError" class="text-danger"	style="display: none"></span>
+											</div>
+										</div>
+										
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="dtp_input2"
+													th:text="#{label.assignment.submitStartDate}"
+													class="control-label">Start Date</label>
+												<div class="input-group date form_date">
+													<input class="form-control" name="submitStartDate"
+														size="16" type="datetime" th:field="*{submitStartDate}" />
+													<span class="input-group-addon"><span
+														class="glyphicon glyphicon-remove"></span></span> <span
+														class="input-group-addon"><span
+														class="glyphicon glyphicon-calendar"></span></span>
+												</div>
+											</div>
+
+										</div>
+										
+										<div class="col-md-3">
+											<div class="form-group">
+												<label for="dtp_input2"
+													th:text="#{label.assignment.submitEndDate}"
+													class="control-label">End Date</label>
+												<div class="input-group date form_date">
+													<input class="form-control" name="submitEndDate"
+														th:field="*{submitEndDate}" size="16" type="datetime" />
+													<span class="input-group-addon"><span
+														class="glyphicon glyphicon-remove"></span></span> <span
+														class="input-group-addon"><span
+														class="glyphicon glyphicon-calendar"></span></span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div>
+											<div class="form-group">
+												 <label th:text="#{label.assignment.instructions}" class="control-label">Instructions</label>
+												 <textarea class="form-control" id="summernote" th:field="*{instructions}" name="instructions" placeholder="content" maxlength="140" rows="7"></textarea>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										
+										<div class="col-md-7">
+											<div class="control-group">
+												<label for="select-to">Assignment To:</label> 
+												<input id="assignmentEmail" th:field="*{emailsTo}" class="contacts" value=""  name="emailsTo[]" multiple  placeholder="Pick some email...">
+											</div>
+										</div>
+										
+										<div id="assignmentStatus" class="col-md-2">
+											<div class="checkbox">
+												<label><input type="checkbox" id="publishedAssignment" th:field="*{status}"  th:value="${status}">Publish Assignment</label>
+											</div>
+										</div>
+										
+										<div class="col-md-3">
+											<div class="form-actions" style="text-align: right;">
+												<!-- <button type="submit" data-loading-text="<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>Processing Request..."  id="assignment-create-button" th:text="#{label.form.submit}" class="btn btn-primary">submit</button> -->
+												<button type="submit" data-loading-text="<span class='glyphicon glyphicon-refresh spinning'></span>Processing Request..."  id="assignment-create-button" th:text="#{label.form.submit}" class="btn btn-primary">submit</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

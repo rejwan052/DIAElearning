@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" layout:decorator="layouts/main">
+
+<head>
+<meta charset="ISO-8859-1">
+<title>Daffodil E-learning | Resource Not Found</title>
+</head>
+<body>
+		<th:block layout:fragment="script">
+		<link th:href="@{/assets/css/error.min.css}" rel="stylesheet" type="text/css" />
+		<!-- <script>
+		</script> -->
+       </th:block>
+
+	<div layout:fragment="content">
+		
+			<div class="row">
+				<div class="col-md-12 page-404">
+					<div class="number font-red">404</div>
+					<div class="details">
+						<h3>Oops! Resource not found.</h3>
+						<p>
+							We can not find the page you're looking for.
+						</p>
+					</div>
+				</div>
+			</div>
+		
+	</div>
+
+
+</body>
+</html>

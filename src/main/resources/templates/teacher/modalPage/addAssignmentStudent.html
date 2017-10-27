@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+
+<th:block layout:fragment="script">
+
+		<link th:href="@{/assets/selectize/css/selectize.default.css}" rel="stylesheet" type="text/css" />
+		<link th:href="@{/assets/css/selectize-custom.css}" rel="stylesheet" type="text/css" />
+		<script th:src="@{/assets/selectize/js/standalone/selectize.js}"></script>
+		<!-- <script th:src="@{/assets/js/custom_js/addStudentToAssignment.js}"></script> -->
+		
+		<style type="text/css">
+				.glyphicon.spinning {
+					 animation: spin 1s infinite linear;
+					 -webkit-animation: spin2 1s infinite linear;
+				}
+					
+				@keyframes spin {
+					 from { transform: scale(1) rotate(0deg); }
+					 to { transform: scale(1) rotate(360deg); }
+				}
+					
+				@-webkit-keyframes spin2 {
+					 from { -webkit-transform: rotate(0deg); }
+					 to { -webkit-transform: rotate(360deg); }
+				}
+
+		</style>
+		
+		<script th:inline="javascript">
+           /*<![CDATA[*/
+               
+        	  
+			var contextRoot = /*[[@{/}]]*/'';
+
+			$(document)
+					.ready(
+							function() {
+
+								var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@'
+										+ '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
+
+								var $select = $('#addStudentToAssignment')
+										.selectize(
+												{
+													persist : false,
+													delimiter : ',',
+													maxItems : null,
+													plugins : [ 'remove_button' ],
+													valueField : 'email',
+													labelField : 'name',
+													searchField : [ 'name','email' ],
+													preload : true,
+													maxOptions : 10,
+													dropdownDirection : 'top-right',
+													options : [],
+													sortField : [ {
+														field : 'name',
+														direction : 'asc'
+													}, {
+														field : 'email',
+														direction : 'asc'
+													} ],
+													render : {
+														item : function(item,escape) {
+															/*return '<div>' +
+															    (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
+															    (item.email ? '<span class="email">' + escape(item.email) + '</span>' : '') +
+															'</div>';*/
+															return '<div>'
+																	+ (item.email ? '<span class="email">'
+																			+ escape(item.email)
+																			+ '</span>'
+																			: '')
+																	+ '</div>';
+														},
+														option : function(item,escape) {
+															var label = item.name|| item.email;
+															var caption = item.name ? item.email: null;
+
+															return '<div>'
+																	+ '<span class="control-label">'
+																	+ escape(label)
+																	+ '</span>'
+																	+ (caption ? '<span class="caption">'
+																			+ escape(caption)
+																			+ '</span>'
+																			: '')
+																	+ '</div>';
+
+														}
+													},
+													createFilter : function(
+															input) {
+														var match, regex;
+
+														// email@address.com
+														regex = new RegExp('^'
+																+ REGEX_EMAIL
+																+ '$', 'i');
+														match = input
+																.match(regex);
+														if (match)
+															return !this.options
+																	.hasOwnProperty(match[0]);
+
+														// name <email@address.com>
+														regex = new RegExp(
+																'^([^<]*)\<' + REGEX_EMAIL + '\>$',
+																'i');
+														match = input
+																.match(regex);
+														if (match)
+															return !this.options
+																	.hasOwnProperty(match[2]);
+
+														return false;
+													},
+													create : function(input) {
+														if ((new RegExp('^'
+																+ REGEX_EMAIL
+																+ '$', 'i'))
+																.test(input)) {
+															return {
+																email : input
+															};
+														}
+														var match = input
+																.match(new RegExp(
+																		'^([^<]*)\<' + REGEX_EMAIL + '\>$',
+																		'i'));
+														if (match) {
+															return {
+																email : match[2],
+																name : $
+																		.trim(match[1])
+															};
+														}
+														alert('Invalid email address.');
+														return false;
+													},
+													load : function(query,
+															callback) {
+														console
+																.log(contextRoot)
+														if (!query.length)
+															return callback();
+														$
+																.ajax({
+																	url : contextRoot
+																			+ 'teacher/assignmentEmail.json/'
+																			+ encodeURIComponent(query),
+																	type : 'GET',
+																	dataType : 'json',
+																	error : function() {
+																		callback();
+																	},
+																	success : function(
+																			res) {
+																		callback(res);
+																	}
+																});
+													}
+												});
+
+							});
+
+			$(document).ready(function() {
+
+				ajaxSetUp();
+
+				$('#addAssignmentStudentEmailForm').submit(function(event) {
+					saveAssignment(event);
+				});
+
+			});
+
+			function saveAssignment(event) {
+
+				event.preventDefault();
+
+				var formData = $('#addAssignmentStudentEmailForm').serialize();
+				var assignmentId = $('#assignmentId').val();
+
+				/*console.log("AssignmentId :"+assignmentId);*/
+
+				$.post(contextRoot + "teacher/addStudentToAssignment",formData,function(data) {
+							$('#addAssignmentStudentModal').modal('hide');
+							$('.modal-backdrop').remove();
+							window.location.href = contextRoot+ "teacher/viewAssignment/"+"?assignmentId=" + assignmentId;
+						}).fail(
+							function(data) {
+								if (data.responseJSON.error
+										.indexOf("InternalError") > -1) {
+									errorMsg(data.responseJSON.message);
+								} else if (data.responseJSON.error == "AssignmentTitleAlreadyExistByUser") {
+									errorMsg(data.responseJSON.message);
+								} else {
+									var errors = $
+											.parseJSON(data.responseJSON.message);
+									$.each(errors, function(index, item) {
+										errorMsg(item.defaultMessage);
+									});
+								}
+							});
+			}
+
+			$('button[data-loading-text]').on('click', function() {
+				ajaxSetUp();
+			});
+
+			function ajaxSetUp() {
+
+				$.ajaxSetup({
+					beforeSend : function() {
+						$("#assignmentStudent-add-button").button('loading');
+					},
+					complete : function() {
+						$("#assignmentStudent-add-button").button('reset');
+					}
+				});
+
+			}
+			/*]]>*/
+		</script>
+		
+        
+</th:block>
+
+<form role="form" id="addAssignmentStudentEmailForm" th:object="${assignmentDto}" >
+
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"
+		aria-hidden="true">×</button>
+	<h3 class="modal-title" th:text="*{'Add Student to '+title}">Add Assignment Student</h3>
+</div>
+
+<div class="modal-body">
+	<div class="control-group">
+		<input id="assignmentId" type="hidden" th:field="*{id}" />
+		
+		<input type="hidden" th:field="*{title}" />
+		<input type="hidden" th:field="*{session}" />
+		<input type="hidden" th:field="*{submitStartDate}" />
+		<input type="hidden" th:field="*{submitEndDate}" />
+		<input type="hidden" th:field="*{status}" />
+		<input type="hidden" th:field="*{instructions}" />
+		
+		<label for="select-to">Student Email:</label> 
+		<input id="addStudentToAssignment" th:field="*{emailsTo}" class="contacts" value="" multiple placeholder="Pick some student email...">
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button type="submit" data-loading-text="<span class='glyphicon glyphicon-refresh spinning'></span>Processing Request..."  id="assignmentStudent-add-button" th:text="#{label.form.submit}" class="btn btn-primary">submit</button>
+	<button type="button" class="btn btn-default " data-dismiss="modal">Cancel</button>
+</div>
+</form>
